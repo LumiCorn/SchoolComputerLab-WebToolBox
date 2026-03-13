@@ -456,6 +456,12 @@ body::before {
     flex-shrink: 0;
 }
 
+.warning-icon {
+    font-size: 1.2em;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
 /* 浅色主题下的警告框 */
 [data-theme="light"] .warning-box {
     background: #fff3cd;
