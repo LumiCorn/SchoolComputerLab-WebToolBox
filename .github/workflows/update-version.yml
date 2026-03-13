@@ -23,8 +23,8 @@ jobs:
 
     - name: Commit and push changes
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "lumicorn@github.com"
+        git config --local user.name "LumiBot"
         git add version.json
         git commit -m "Update version date to $(date +%Y-%m-%d)" || echo "No changes to commit"
         git push
