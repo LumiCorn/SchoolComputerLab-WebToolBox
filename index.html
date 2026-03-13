@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>机房ToolBox ｜ 源自 LumiDoc</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-toolbox"></i>
+                <span class="brand-name">机房ToolBox</span>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="page-header">
+            <h1 class="main-title">机房工具箱</h1>
+            <p class="subtitle">学校机房的瑞士军刀</p>
+        </header>
+
+        <main>
+            <div class="tools-grid">
+                <!-- Card Slot -->
+                <div class="tool-card glass-card">
+                    <div class="tool-icon">
+                        <img src="assets/MythwareTool/MythwareToolAppicon.jpeg" alt="Mythware Tool Icon">
+                    </div>
+                    <h3 class="tool-title">MythwareTool</h3>
+                    <p class="tool-description">
+                        极域工具包，支持多种控制极域以及学生机房管理助手的工具。StudentMain、Mythware、Jiyu
+                    </p>
+                    <div class="nametag">
+                        <i class="fas fa-user"></i>
+                        <a href="https://github.com/BengbuGuards" target="_blank">BengbuGuards</a>
+                    </div>
+                    <div class="nametag">
+                        <i class="fas fa-link"></i>
+                        <a href="https://github.com/BengbuGuards/MythwareToolkit" target="_blank">GitHub链接</a>
+                    </div>
+                    <div class="nametag">
+                        <i class="fa-solid fa-code-branch"></i>
+                        <a>v1.2.4</a>
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tag">获取极域密码</span>
+                        <span class="tag">防止广播窗口强制全屏</span>
+                        <span class="tag">强制关闭极域</span>
+                        <span class="tag">解除各种限制</span>
+                    </div>
+                    <div class="button-hover">
+                        <button class="button" data-url="/assets/MythwareTool/MythwareToolkit.v1.2.4.x86.exe">下载 .exe 文件</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2026-至今 LumiDoc | 机房工具箱为 LumiDoc 的一部分</p>
+            <div class="tool-count">可用工具数: <span id="toolCount"></span></div>
+            <div id="versionInfo"></div>
+            <div class="footer-links">
+                <a href="https://space.bilibili.com/234052228">Bilibili 频道页面</a>
+                <a href="https://doc.lumicornx.xyz/">LumiDoc</a>
+                <a href="https://github.com/lumicorn/SchoolComputerLab-WebToolBox" target="_blank">GitHub 链接</a>
+                <a href="" target="_blank">投递您的工具</a>
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

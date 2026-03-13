@@ -1,0 +1,30 @@
+name: 版本计算与日期更新
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update version.json
+      run: |
+        CURRENT_DATE=$(date +%Y-%m-%d)
+        jq --arg date "$CURRENT_DATE" '.lastUpdated = $date' version.json > version_temp.json
+        mv version_temp.json version.json
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add version.json
+        git commit -m "Update version date to $(date +%Y-%m-%d)" || echo "No changes to commit"
+        git push
