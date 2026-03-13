@@ -42,6 +42,7 @@ html, body {
     height: 100%;
     width: 100%;
     overflow-x: hidden;
+    overflow-y: auto; /* 确保垂直滚动正常 */
 }
 
 /* 修复：确保背景覆盖整个页面，包括移动端 */
@@ -696,6 +697,16 @@ footer {
 
 .floating {
     animation: float 6s ease-in-out infinite;
+}
+
+/* 隐藏滚动条 */
+::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+html {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
 }
 
 .glow {
