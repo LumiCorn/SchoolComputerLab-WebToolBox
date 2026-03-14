@@ -306,6 +306,87 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.boxShadow = 'none';
         });
     });
+
+    // 检测滚动并显示提示
+    const scrollHint = document.createElement('div');
+    scrollHint.textContent = '如果无法滚动页面，可能是与 SmoothScroll 等平滑滚动插件冲突，可以在插件内针对该网站不启用。';
+    scrollHint.style.position = 'fixed';
+    scrollHint.style.right = '2rem';
+    scrollHint.style.background = 'var(--nav-bg)';
+    scrollHint.style.backdropFilter = 'blur(20px) saturate(180%)';
+    scrollHint.style.webkitBackdropFilter = 'blur(20px) saturate(180%)';
+    scrollHint.style.border = '1px solid var(--glass-border)';
+    scrollHint.style.borderRadius = '20px';
+    scrollHint.style.padding = '0.8rem 1.2rem';
+    scrollHint.style.color = 'var(--text)';
+    scrollHint.style.fontSize = '0.9rem';
+    scrollHint.style.opacity = '0';
+    scrollHint.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    scrollHint.style.zIndex = '1001';
+    scrollHint.style.maxWidth = '320px';
+    scrollHint.style.wordWrap = 'break-word';
+    scrollHint.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
+    scrollHint.style.transform = 'translateY(-10px)';
+    scrollHint.style.pointerEvents = 'none';
+    scrollHint.style.cursor = 'pointer';
+
+    let hasScrolled = false;
+    const initialScrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
+    function getCurrentScrollTop() {
+        return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    }
+
+    // 淡出并移除提示框
+    function dismissScrollHint() {
+        scrollHint.style.opacity = '0';
+        scrollHint.style.transform = 'translateY(-10px)';
+        window.removeEventListener('scroll', onScrollWhileHintShown);
+        document.removeEventListener('scroll', onScrollWhileHintShown, true);
+        setTimeout(() => {
+            if (scrollHint.parentNode) scrollHint.parentNode.removeChild(scrollHint);
+        }, 500);
+    }
+
+    // 提示框显示后检测滚动
+    function onScrollWhileHintShown() {
+        dismissScrollHint();
+    }
+
+    // 监听位移
+    function onScrollTracking() {
+        hasScrolled = true;
+        window.removeEventListener('scroll', onScrollTracking);
+        document.removeEventListener('scroll', onScrollTracking, true);
+    }
+    window.addEventListener('scroll', onScrollTracking, { passive: true });
+    document.addEventListener('scroll', onScrollTracking, { passive: true, capture: true });
+
+    // 15秒后，若未发生过任何滚动则显示提示
+    setTimeout(() => {
+        const scrolledByPosition = getCurrentScrollTop() !== initialScrollTop;
+        if (!hasScrolled && !scrolledByPosition) {
+            const navbar = document.querySelector('.navbar');
+            const navbarHeight = navbar ? navbar.getBoundingClientRect().height : 60;
+            scrollHint.style.top = (navbarHeight + 10) + 'px';
+
+            document.body.appendChild(scrollHint);
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    scrollHint.style.opacity = '1';
+                    scrollHint.style.transform = 'translateY(0)';
+                    scrollHint.style.pointerEvents = 'auto';
+                });
+            });
+
+            // 点击关闭
+            scrollHint.addEventListener('click', dismissScrollHint);
+            // 页面真实滚动时淡出
+            window.addEventListener('scroll', onScrollWhileHintShown, { passive: true });
+            document.addEventListener('scroll', onScrollWhileHintShown, { passive: true, capture: true });
+        }
+    }, 15000);
 });
 
 // 添加窗口调整大小时的重置

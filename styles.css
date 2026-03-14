@@ -12,8 +12,9 @@
     --glass-border: rgba(255, 255, 255, 0.1);
     --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --nav-bg: rgba(10, 14, 23, 0.95); /* 导航栏独立背景色 */
+    --nav-bg: rgba(10, 14, 23, 0.2); /* 导航栏独立背景色 */
     --button: #00cc7a;
+    --text-explanation: #8691a125;
 }
 
 /* 浅色模式变量 */
@@ -27,7 +28,7 @@
     --glass-bg: rgba(255, 255, 255, 0.85);
     --glass-border: rgba(0, 0, 0, 0.08);
     --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    --nav-bg: rgba(240, 248, 255, 0.95); /* 浅色模式导航栏背景 */
+    --nav-bg: rgba(240, 248, 255, 0.2); /* 浅色模式导航栏背景 */
     --button: #00cc7a;
 }
 
@@ -45,7 +46,7 @@ html, body {
     overflow-y: auto; /* 确保垂直滚动正常 */
 }
 
-/* 修复：确保背景覆盖整个页面，包括移动端 */
+/* 全局样式 */
 body {
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     color: var(--text);
@@ -54,6 +55,12 @@ body {
     position: relative;
     transition: background 0.5s ease, color 0.5s ease;
     overflow-x: hidden;
+
+    /* 禁止用户选择文本，提升体验 */
+    user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -moz-user-select: none;
 }
 
 /* 增强背景覆盖，防止移动端拉出纯白界面 */
@@ -81,7 +88,7 @@ body::before {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 2rem;
     padding-top: 5rem; /* 为导航栏留出空间 */
@@ -90,7 +97,7 @@ body::before {
     z-index: 1;
 }
 
-/* 导航栏样式 - 增强液态玻璃效果 */
+/* 导航栏样式 */
 .navbar {
     position: fixed;
     top: 0;
@@ -149,7 +156,7 @@ body::before {
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 0 2rem;
     display: flex;
@@ -323,7 +330,7 @@ body::before {
 /* 工具网格 */
 .tools-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
 }
@@ -523,7 +530,7 @@ body::before {
 /* 工具网格 - 增加与标题的间距 */
 .tools-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
     margin-top: 3rem; /* 增加顶部间距 */
 }
@@ -589,6 +596,17 @@ footer {
 
 .footer-links a:hover::after {
     width: 100%;
+}
+
+.footer-explanation {
+    position: absolute;
+    bottom: 1rem;
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+    color: var(--text-explanation);
+    font-size: 0.8rem;
+    line-height: 1.5;
 }
 
 /* 响应式设计 */
