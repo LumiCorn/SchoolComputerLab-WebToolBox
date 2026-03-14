@@ -271,23 +271,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 加载并显示版本信息
     fetch('version.json')
-        .then(response => {
-            console.log('Fetch response:', response);
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            console.log('Version data:', data);
             const versionElement = document.getElementById('versionInfo');
-            console.log('Version element:', versionElement);
-            if (versionElement) {
-                versionElement.innerText = `版本: ${data.version} | 更新时间: ${data.lastUpdated}`;
-                versionElement.style.margin = '0.5rem 0';
-                versionElement.style.fontSize = '0.85rem';
-                versionElement.style.color = 'var(--text-secondary)';
-                console.log('Version info updated');
-            } else {
-                console.error('versionInfo element not found');
+            if (!versionElement) {
+                return;
             }
+
+            versionElement.innerText = `版本: ${data.version} | 更新时间: ${data.lastUpdated || '未知'}`;
+            versionElement.style.margin = '0.5rem 0';
+            versionElement.style.fontSize = '0.85rem';
+            versionElement.style.color = 'var(--text-secondary)';
         })
         .catch(error => {
             console.error('加载版本信息失败:', error);

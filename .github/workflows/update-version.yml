@@ -1,30 +1,53 @@
-name: 版本计算与日期更新
+name: 构建并部署 Pages
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  update-version:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Update date in version.json for deployment artifact
+      run: |
+        jq -e '.version | type == "string" and length > 0' version.json > /dev/null
+        mkdir -p _site
+        rsync -av --exclude '.git' --exclude '.github' ./ _site/
+        CURRENT_DATE=$(date -u +%Y-%m-%d)
+        jq --arg date "$CURRENT_DATE" '.lastUpdated = $date' _site/version.json > _site/version_temp.json
+        mv _site/version_temp.json _site/version.json
+
+    - name: Setup Pages
+      uses: actions/configure-pages@v5
+
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        path: _site
 
-    - name: Update version.json
-      run: |
-        CURRENT_DATE=$(date +%Y-%m-%d)
-        jq --arg date "$CURRENT_DATE" '.lastUpdated = $date' version.json > version_temp.json
-        mv version_temp.json version.json
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-    - name: Commit and push changes
-      run: |
-        git config --local user.email "lumicorn@github.com"
-        git config --local user.name "LumiBot"
-        git add version.json
-        git commit -m "Update version date to $(date +%Y-%m-%d)" || echo "No changes to commit"
-        git push
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
