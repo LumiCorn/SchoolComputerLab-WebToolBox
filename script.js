@@ -194,6 +194,124 @@ function initTitleAnimation() {
 document.addEventListener('DOMContentLoaded', function() {
     initThemeToggle();
     initTitleAnimation();
+
+    function updateToolCount() {
+        const visibleToolCount = document.querySelectorAll('.tool-card:not(.hidden-card)').length;
+        const toolCountElement = document.getElementById('toolCount');
+        if (toolCountElement) {
+            toolCountElement.innerText = visibleToolCount;
+        }
+    }
+
+    function initCategoryFilter() {
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const cards = document.querySelectorAll('.tool-card');
+
+        if (!categoryButtons.length || !cards.length) {
+            return;
+        }
+
+        function applyCategory(selectedCategory) {
+            cards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                const shouldShow = selectedCategory === 'all' || cardCategory === selectedCategory;
+
+                card.classList.toggle('hidden-card', !shouldShow);
+
+                if (shouldShow) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+
+            updateToolCount();
+        }
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const selectedCategory = button.getAttribute('data-category');
+
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                applyCategory(selectedCategory);
+            });
+        });
+
+        const activeButton = document.querySelector('.category-btn.active');
+        if (activeButton) {
+            applyCategory(activeButton.getAttribute('data-category'));
+        }
+    }
+
+    function initMobileCategoryPanel() {
+        const toggle = document.getElementById('categoryMobileToggle');
+        const sidebar = document.getElementById('categorySidebar');
+        const backdrop = document.getElementById('categoryBackdrop');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const mobileQuery = window.matchMedia('(max-width: 768px)');
+
+        if (!toggle || !sidebar || !backdrop) {
+            return;
+        }
+
+        function openPanel() {
+            sidebar.classList.add('is-open');
+            backdrop.classList.add('is-open');
+            toggle.classList.add('is-active');
+            document.body.classList.add('category-modal-open');
+            toggle.setAttribute('aria-expanded', 'true');
+            toggle.setAttribute('aria-label', '关闭分类');
+            sidebar.setAttribute('aria-hidden', 'false');
+            backdrop.setAttribute('aria-hidden', 'false');
+        }
+
+        function closePanel() {
+            sidebar.classList.remove('is-open');
+            backdrop.classList.remove('is-open');
+            toggle.classList.remove('is-active');
+            document.body.classList.remove('category-modal-open');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.setAttribute('aria-label', '打开分类');
+            sidebar.setAttribute('aria-hidden', 'true');
+            backdrop.setAttribute('aria-hidden', 'true');
+        }
+
+        toggle.addEventListener('click', () => {
+            const isOpen = sidebar.classList.contains('is-open');
+            if (isOpen) {
+                closePanel();
+            } else {
+                openPanel();
+            }
+        });
+
+        backdrop.addEventListener('click', closePanel);
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && sidebar.classList.contains('is-open')) {
+                closePanel();
+            }
+        });
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (mobileQuery.matches) {
+                    closePanel();
+                }
+            });
+        });
+
+        mobileQuery.addEventListener('change', (event) => {
+            closePanel();
+        });
+
+        if (mobileQuery.matches) {
+            closePanel();
+        }
+    }
+
+    initCategoryFilter();
+    initMobileCategoryPanel();
     
     // 卡片悬停效果
     const cards = document.querySelectorAll('.glass-card');
@@ -263,11 +381,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 计算并显示工具数量
-    const toolCount = document.querySelectorAll('.tool-card').length;
-    const toolCountElement = document.getElementById('toolCount');
-    if (toolCountElement) {
-        toolCountElement.innerText = toolCount;
-    }
+    updateToolCount();
 
     // 加载并显示版本信息
     fetch('version.json')

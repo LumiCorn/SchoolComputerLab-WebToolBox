@@ -32,9 +32,25 @@
         </header>
 
         <main>
-            <div class="tools-grid">
+            <button class="category-mobile-toggle" id="categoryMobileToggle" type="button" aria-label="打开分类" aria-controls="categorySidebar" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="category-backdrop" id="categoryBackdrop" aria-hidden="true"></div>
+            <!-- Tools Section -->
+
+            <section class="tools-layout">
+                <aside class="category-sidebar glass-card" id="categorySidebar" aria-label="工具分类">
+                    <h2 class="category-title"><i class="fas fa-bars"></i><span> 工具分类</span></h2>
+                    <div class="category-list" id="categoryList">
+                        <button class="category-btn active" data-category="all" type="button" aria-label="全部应用"><i class="fas fa-layer-group"></i><span>全部应用</span></button>
+                        <button class="category-btn" data-category="manage" type="button" aria-label="管理软件对抗"><i class="fas fa-shield-virus"></i><span>管理软件对抗</span></button>
+                        <button class="category-btn" data-category="webapp" type="button" aria-label="网站与应用"><i class="fas fa-paper-plane"></i><span>网站与应用</span></button>
+                    </div>
+                </aside>
+
+                <div class="tools-grid" id="toolsGrid">
                 <!-- Card Slot -->
-                <div class="tool-card glass-card">
+                <div class="tool-card glass-card" data-category="manage">
                     <div class="tool-icon">
                         <img src="assets/MythwareTool/MythwareToolAppicon.jpeg" alt="Mythware Tool Icon">
                     </div>
@@ -65,7 +81,7 @@
                     </div>
                 </div>
 
-                <div class="tool-card glass-card">
+                <div class="tool-card glass-card" data-category="manage">
                     <div class="tool-icon">
                         <img src="assets/Jiyu-Trainer/Jiyu-Trainer.png" alt="Jiyu Trainer Icon">
                     </div>
@@ -101,7 +117,7 @@
                     </div>
                 </div>
 
-                <div class="tool-card glass-card">
+                <div class="tool-card glass-card" data-category="webapp">
                     <div class="tool-icon">
                         <img src="assets/Airportal.cn/airportal-icon.png" alt="Airportal Icon">
                     </div>
@@ -121,7 +137,7 @@
                     </div>
                 </div>
 
-                <div class="tool-card glass-card">
+                <div class="tool-card glass-card" data-category="webapp">
                     <div class="tool-icon">
                         <img src="assets/GeekUninstaller/GeekUninstaller.png" alt="Geek Uninstaller Icon">
                     </div>
@@ -141,8 +157,33 @@
                         <button class="button" data-url="assets/GeekUninstaller/GeekUninstaller-1.5.3.170.exe">下载 .exe 文件</button>
                     </div>
                 </div>
+
+                <div class="tool-card glass-card" data-category="webapp">
+                    <div class="tool-icon">
+                        <img src="assets/Everything/Everything.webp" alt="Everything Icon">
+                    </div>
+                    <h3 class="tool-title">Everything</h3>
+                    <p class="tool-description">
+                        Windows 上最强大的文件搜索工具。只需输入文件名，即可在一瞬间找到文件。
+                    </p>
+                    <div class="nametag">
+                        <i class="fa-regular fa-building"></i>
+                        <a href="https://www.voidtools.com/" target="_blank">Voidtools</a>
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tag">文件搜索</span>
+                        <span class="tag">高效查找</span>
+                    </div>
+                    <div class="button-hover">
+                        <button class="button" data-url="assets/Everything/Everything-1.4.1.1025.zip">下载 .zip 文件</button>
+                    </div>
+                </div>
+
+
+
                 <!-- Card Slot End-->
-            </div>
+                </div>
+            </section>
         </main>
 
         <footer>

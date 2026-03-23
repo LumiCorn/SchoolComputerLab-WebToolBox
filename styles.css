@@ -527,12 +527,116 @@ body::before {
     line-height: 1.4;
 }
 
+/* 工具分栏布局 */
+.tools-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.category-sidebar {
+    position: sticky;
+    top: 6.2rem;
+    padding: 1.5rem;
+}
+
+.category-title {
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.category-mobile-toggle {
+    display: none;
+    position: fixed;
+    top: 5.1rem;
+    left: 1rem;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--text);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    cursor: pointer;
+    z-index: 1004;
+    transition: var(--transition);
+}
+
+.category-mobile-toggle:hover {
+    border-color: var(--accent-glow);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.category-mobile-toggle.is-active {
+    border-color: var(--accent-glow);
+    box-shadow: 0 0 18px var(--accent-glow);
+}
+
+.category-backdrop {
+    display: none;
+}
+
+.category-btn {
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-secondary);
+    border-radius: 12px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.92rem;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.category-btn i {
+    width: 1.1rem;
+    margin-right: 0.45rem;
+    color: var(--accent);
+    opacity: 0.9;
+}
+
+.category-btn:hover {
+    color: var(--text);
+    border-color: var(--accent-glow);
+    transform: translateX(2px);
+}
+
+.category-btn.active {
+    color: var(--text);
+    border-color: rgba(0, 212, 255, 0.4);
+    background: rgba(0, 212, 255, 0.12);
+    box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.2) inset;
+}
+
+[data-theme="light"] .category-btn {
+    background: rgba(0, 119, 204, 0.05);
+}
+
+[data-theme="light"] .category-btn.active {
+    border-color: rgba(0, 119, 204, 0.35);
+    background: rgba(0, 119, 204, 0.12);
+    box-shadow: 0 0 0 1px rgba(0, 119, 204, 0.18) inset;
+}
+
 /* 工具网格 - 增加与标题的间距 */
 .tools-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
-    margin-top: 3rem; /* 增加顶部间距 */
+    margin-top: 0;
+}
+
+.tool-card.hidden-card {
+    display: none;
 }
 
 [data-theme="light"] .tag {
@@ -643,9 +747,68 @@ footer {
         font-size: 1.2rem;
     }
     
+    .tools-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .category-sidebar {
+        position: fixed;
+        top: 5.1rem;
+        left: 1rem;
+        width: calc(100vw - 2rem);
+        max-width: 360px;
+        z-index: 1005;
+        transform: translateY(0) scale(0.78);
+        transform-origin: top left;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0s linear 0.45s;
+    }
+
+    .category-sidebar.is-open {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0s;
+    }
+
+    .category-mobile-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .category-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 1003;
+        background: rgba(5, 9, 20, 0.42);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+    }
+
+    .category-backdrop.is-open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .category-list {
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
+
+    .category-btn {
+        text-align: left;
+        flex: 1 1 auto;
+    }
+
     .tools-grid {
         grid-template-columns: 1fr;
-        margin-top: 1rem;
+        margin-top: 0;
     }
     
     .theme-toggle {
@@ -658,6 +821,10 @@ footer {
         flex-direction: row;
         gap: 1rem;
     }
+}
+
+body.category-modal-open {
+    overflow: hidden;
 }
 
 /* 移动端特定修复 - 防止背景拉出 */
